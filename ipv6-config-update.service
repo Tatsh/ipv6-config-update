@@ -1,0 +1,9 @@
+[Unit]
+Description=Watches for IPv6 IP changes, updates configurations, and restarts relevant services.
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/ipv6-config-update
+PrivateTmp=true
+Type=oneshot

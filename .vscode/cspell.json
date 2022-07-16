@@ -1,0 +1,15 @@
+{
+  "dictionaryDefinitions": [
+    {
+      "name": "general",
+      "path": "dict.txt"
+    }
+  ],
+  "ignorePaths": ["build"],
+  "languageSettings": [
+    {
+      "dictionaries": ["general"],
+      "languageId": "*"
+    }
+  ]
+}

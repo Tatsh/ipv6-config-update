@@ -1,0 +1,9 @@
+[Unit]
+Description=Update files containing the /56 of the IPv6 address and restart relevant services.
+
+[Timer]
+OnCalendar=*:0/15
+Persistent=yes
+
+[Install]
+WantedBy=timers.target

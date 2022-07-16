@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "cwd": "${workspaceFolder}/build",
+      "name": "Debug",
+      "program": "${workspaceFolder}/build/rcvpn",
+      "request": "launch",
+      "type": "cppdbg"
+    }
+  ],
+  "version": "0.2.0"
+}

@@ -1,0 +1,11 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "https://specifications.freedesktop.org/dbus/introspect-latest.dtd">
+<node>
+  <interface name="org.freedesktop.systemd1.Manager">
+    <method name="ReloadOrRestartUnit">
+      <arg type="s" name="name" direction="in" />
+      <arg type="s" name="mode" direction="in" />
+      <arg type="o" name="job" direction="out" />
+    </method>
+  </interface>
+  <node name="job" />
+</node>
