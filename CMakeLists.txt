@@ -15,11 +15,11 @@ find_package(
   Qt5
   COMPONENTS DBus Network
   REQUIRED)
+find_package(ECM 5.92.0 NO_MODULE REQUIRED)
 pkg_check_modules(LIBSYSTEMD libsystemd REQUIRED)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
-find_package(ECM 5.95.0 NO_MODULE REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
 set(IPWATCH_SRCS main.cpp)
