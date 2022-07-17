@@ -141,7 +141,7 @@ int main(int argc, char *argv[]) {
     }
     sd_notify(0, "READY=1");
     auto prefixLength = settings.value(settingsKeyPrefixLength, 56).toUInt();
-    if ((prefixLength % 8) == 0) {
+    if ((prefixLength % 8) != 0) {
         sd_notify(0, "STATUS=Invalid prefix length.\nERRNO=38\nSTOPPING=1");
         qFatal("Only prefix lengths of multiples of 8 are supported.");
     }
