@@ -157,5 +157,5 @@ int main(int argc, char *argv[]) {
               manager,
               prefixLength);
     sd_notify(0, "STOPPING=1");
-    return app.exec();
+    return 0;
 }
