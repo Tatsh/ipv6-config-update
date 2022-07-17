@@ -13,14 +13,15 @@
 
 const QString appName = QStringLiteral("ipv6-config-update");
 const QString appVersion = QStringLiteral("0.0.1");
-const QString ipv6_56FormatRe = QStringLiteral("%1[0-9]{2}:.*/56");
+const QString cidrRe = QStringLiteral("%1[0-9]{2}:.*/%2");
 const QString orgDomain = QStringLiteral("sh.tat.ipv6-config-update");
 const QString orgName = QStringLiteral("Tatsh");
 const QString settingsFilePath = QStringLiteral("/etc/ipv6-config-update.conf");
 const QString settingsKeyFiles = QStringLiteral("files");
 const QString settingsKeyInterface = QStringLiteral("interface");
+const QString settingsKeyPrefixLength = QStringLiteral("prefixLength");
 const QString settingsKeyUnits = QStringLiteral("units");
-const QString slash56Format = QStringLiteral("%1/56");
+const QString slashFormat = QStringLiteral("%1/%2");
 const QString systemd1Domain = QStringLiteral("org.freedesktop.systemd1");
 const QString systemd1Path = QStringLiteral("org/freedesktop/systemd1");
 const QString unitModeReplace = QStringLiteral("replace");
@@ -53,17 +54,17 @@ QDebug operator<<(QDebug debug, const Value &v) {
     return debug;
 }
 
-inline Value to56(const QNetworkAddressEntry &entry) {
-    auto val = entry.ip().toIPv6Address();
-    std::fill(val.c + 7, val.c + 16, 0);
+inline Value toCidr(const int prefixLength, const Q_IPV6ADDR &val_) {
+    auto val = Q_IPV6ADDR(val_);
+    std::fill(val.c + (prefixLength / 8), val.c + 16, 0);
     auto asString = QHostAddress(val).toString();
-    return Value(slash56Format.arg(asString), !asString.isEmpty());
+    return Value(slashFormat.arg(asString, prefixLength), !asString.isEmpty());
 }
 
-inline Value current(const QString &interfaceName_) {
+inline Value current(const QString &interfaceName_, const uint prefixLength) {
     for (auto entry : QNetworkInterface::interfaceFromName(interfaceName_).addressEntries()) {
         if (entry.ip().isGlobal() && entry.ip().protocol() == QAbstractSocket::IPv6Protocol) {
-            return to56(entry);
+            return toCidr(prefixLength, entry.ip().toIPv6Address());
         }
     }
     return Value();
@@ -73,14 +74,15 @@ inline Value current(const QString &interfaceName_) {
 void doUpdates(const Cidr::Value &cidr,
                const QStringList &files,
                const QStringList &units,
-               SystemdManager &manager) {
+               SystemdManager &manager,
+               const uint prefixLength) {
     if (!cidr.isValid()) {
         qCCritical(LOG_IPV6_CONFIG_UPDATE) << "Invalid CIDR:" << cidr;
         sd_notify(0, "STATUS=Could not get current CIDR\nERRNO=22");
         return;
     }
     qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Generated CIDR:" << cidr;
-    QRegExp re(ipv6_56FormatRe.arg(cidr.string().left(2)));
+    QRegExp re(cidrRe.arg(cidr.string().left(2), prefixLength));
     qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Regular expression:" << re.pattern();
     bool needsRestarts = false;
     for (auto fileName : files) {
@@ -138,10 +140,17 @@ int main(int argc, char *argv[]) {
         qFatal("Failed to create a valid interface for org.freedesktop.systemd1.");
     }
     sd_notify(0, "READY=1");
-    doUpdates(Cidr::current(settings.value(settingsKeyInterface).toString()),
+    auto prefixLength = settings.value(settingsKeyPrefixLength, 56).toUInt();
+    if ((prefixLength % 8) == 0) {
+        sd_notify(0, "STATUS=Invalid prefix length.\nERRNO=38\nSTOPPING=1");
+        qFatal("Only prefix lengths of multiples of 8 are supported.");
+    }
+    qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Prefix length:" << prefixLength;
+    doUpdates(Cidr::current(settings.value(settingsKeyInterface).toString(), prefixLength),
               settings.value(settingsKeyFiles).toStringList(),
               settings.value(settingsKeyUnits).toStringList(),
-              manager);
+              manager,
+              prefixLength);
     sd_notify(0, "STOPPING=1");
     return app.exec();
 }
