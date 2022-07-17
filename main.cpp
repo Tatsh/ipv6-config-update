@@ -89,13 +89,14 @@ void doUpdates(const Cidr::Value &cidr,
         QFile f(fileName);
         f.open(QIODevice::Text | QIODevice::ReadWrite | QIODevice::ExistingOnly);
         auto content = QString::fromLocal8Bit(f.readAll());
-        if (content.contains(cidr.string())) {
+        auto original = content;
+        content.replace(re, cidr.string());
+        if (original == content) {
             qCDebug(LOG_IPV6_CONFIG_UPDATE) << fileName << "needs no changes.";
             f.close();
             continue;
         }
         f.seek(0);
-        content.replace(re, cidr.string());
         qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Writing" << fileName;
         sd_notify(0, "STATUS=Updating config file");
         f.write(content.toLocal8Bit());
