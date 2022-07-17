@@ -24,6 +24,7 @@ killall
 lmrc
 logdir
 logfile
+oneshot
 openfortivpn
 parens
 pgrep
@@ -33,16 +34,8 @@ polkit
 privoxy
 pycache
 qstringbuilder
-rcoffice
-rcvpn
-rcvpndebug
-rcvpnhelperdebug
-ringcentral
-rvcpnhelperdebug
-rcvpnprivate
 signalhandler
 srcs
-sslvpncdg
 strequal
 struct
 tatsh
