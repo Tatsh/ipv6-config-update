@@ -13,12 +13,13 @@ You may want this to run periodically if your ISP uses DHCPv6 and may change the
 ```ini
 interface=interface name to use
 files=file, paths, to, update
-units=systemd, units, to, restart
+prefixLength=56
+units=systemd, units, to, restart, like, smb.service
 ```
 
 ## Limitations
 
-Only `/56` CIDRs are supported.
+Only multiple of eight prefix lengths are supported.
 
 ## Timer
 
