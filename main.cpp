@@ -19,7 +19,7 @@ const QString orgName = QStringLiteral("Tatsh");
 const QString settingsFilePath = QStringLiteral("/etc/ipv6-config-update.conf");
 const QString settingsKeyFiles = QStringLiteral("files");
 const QString settingsKeyInterface = QStringLiteral("interface");
-const QString settingsKeyServices = QStringLiteral("services");
+const QString settingsKeyUnits = QStringLiteral("units");
 const QString slash56Format = QStringLiteral("%1/56");
 const QString systemd1Domain = QStringLiteral("org.freedesktop.systemd1");
 const QString systemd1Path = QStringLiteral("org/freedesktop/systemd1");
@@ -72,7 +72,7 @@ inline Value current(const QString &interfaceName_) {
 
 void doUpdates(const Cidr::Value &cidr,
                const QStringList &files,
-               const QStringList &services,
+               const QStringList &units,
                SystemdManager &manager) {
     if (!cidr.isValid()) {
         qCCritical(LOG_IPV6_CONFIG_UPDATE) << "Invalid CIDR:" << cidr;
@@ -104,7 +104,7 @@ void doUpdates(const Cidr::Value &cidr,
     if (needsRestarts) {
         sd_notify(0, "STATUS=Restarting units");
         QList<QDBusPendingReply<>> replies;
-        for (auto serviceName : services) {
+        for (auto serviceName : units) {
             qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Restarting" << serviceName;
             replies << manager.ReloadOrRestartUnit(serviceName, unitModeReplace);
         }
@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
     sd_notify(0, "READY=1");
     doUpdates(Cidr::current(settings.value(settingsKeyInterface).toString()),
               settings.value(settingsKeyFiles).toStringList(),
-              settings.value(settingsKeyServices).toStringList(),
+              settings.value(settingsKeyUnits).toStringList(),
               manager);
     sd_notify(0, "STOPPING=1");
     return app.exec();
