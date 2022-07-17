@@ -16,6 +16,10 @@ files=file, paths, to, update
 units=systemd, units, to, restart
 ```
 
+## Limitations
+
+Only `/56` CIDRs are supported.
+
 ## Timer
 
 This project contains a systemd timer which runs every 15 minutes.
