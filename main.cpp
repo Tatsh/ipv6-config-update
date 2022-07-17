@@ -57,7 +57,7 @@ inline Value toCidr(const int prefixLength, const Q_IPV6ADDR &val_) {
     auto val = Q_IPV6ADDR(val_);
     std::fill(val.c + (prefixLength / 8), val.c + 16, 0);
     auto asString = QHostAddress(val).toString();
-    return Value(slashFormat.arg(asString).arg(prefixLength).trimmed(), !asString.isEmpty());
+    return Value(slashFormat.arg(asString).arg(prefixLength), !asString.isEmpty());
 }
 
 inline Value current(const QString &interfaceName_, const uint prefixLength) {
@@ -81,7 +81,7 @@ void doUpdates(const Cidr::Value &cidr,
         return;
     }
     qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Generated CIDR:" << cidr;
-    QRegularExpression re(cidrRe.arg(cidr.string().left(2)).arg(prefixLength).trimmed());
+    QRegularExpression re(cidrRe.arg(cidr.string().left(2)).arg(prefixLength));
     qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Regular expression:" << re.pattern();
     bool needsRestarts = false;
     for (auto fileName : files) {
