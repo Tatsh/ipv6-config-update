@@ -11,6 +11,7 @@ You may want this to run periodically if your ISP uses DHCPv6 and may change the
 ## Settings
 
 ```ini
+[main]
 interface=interface name to use
 files=file, paths, to, update
 prefixLength=56
