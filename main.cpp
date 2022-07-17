@@ -16,6 +16,7 @@ const QString appVersion = QStringLiteral("0.0.1");
 const QString ipv6_56FormatRe = QStringLiteral("%1[0-9]{2}:.*/56");
 const QString orgDomain = QStringLiteral("sh.tat.ipv6-config-update");
 const QString orgName = QStringLiteral("Tatsh");
+const QString settingsFilePath = QStringLiteral("/etc/ipv6-config-update.conf");
 const QString settingsKeyFiles = QStringLiteral("files");
 const QString settingsKeyInterface = QStringLiteral("interface");
 const QString settingsKeyServices = QStringLiteral("services");
@@ -81,31 +82,43 @@ void doUpdates(const Cidr::Value &cidr,
     qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Generated CIDR:" << cidr;
     QRegExp re(ipv6_56FormatRe.arg(cidr.string().left(2)));
     qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Regular expression:" << re.pattern();
+    bool needsRestarts = false;
     for (auto fileName : files) {
         qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Reading" << fileName;
         QFile f(fileName);
         f.open(QIODevice::Text | QIODevice::ReadWrite | QIODevice::ExistingOnly);
         auto content = QString::fromLocal8Bit(f.readAll());
+        if (content.contains(cidr.string())) {
+            qCDebug(LOG_IPV6_CONFIG_UPDATE) << fileName << "needs no changes.";
+            f.close();
+            continue;
+        }
         f.seek(0);
         content.replace(re, cidr.string());
         qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Writing" << fileName;
         sd_notify(0, "STATUS=Updating config file");
         f.write(content.toLocal8Bit());
         f.close();
+        needsRestarts = true;
     }
-    sd_notify(0, "STATUS=Restarting units");
-    QList<QDBusPendingReply<>> replies;
-    for (auto serviceName : services) {
-        qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Restarting" << serviceName;
-        replies << manager.ReloadOrRestartUnit(serviceName, unitModeReplace);
+    if (needsRestarts) {
+        sd_notify(0, "STATUS=Restarting units");
+        QList<QDBusPendingReply<>> replies;
+        for (auto serviceName : services) {
+            qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Restarting" << serviceName;
+            replies << manager.ReloadOrRestartUnit(serviceName, unitModeReplace);
+        }
+        qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Waiting for D-Bus replies";
+        sd_notify(0, "STATUS=Waiting for D-Bus replies");
+        for (auto reply : replies) {
+            reply.waitForFinished();
+            qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Reply arg(2)" << reply.argumentAt(2).toString();
+        }
+        sd_notify(0, "STATUS=All replies received. Done.");
+    } else {
+        sd_notify(0, "STATUS=No service restarts needed.");
+        qCDebug(LOG_IPV6_CONFIG_UPDATE) << "No service restarts needed.";
     }
-    qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Waiting for D-Bus replies";
-    sd_notify(0, "STATUS=Waiting for D-Bus replies");
-    for (auto reply : replies) {
-        reply.waitForFinished();
-        qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Reply arg(2)" << reply.argumentAt(2).toString();
-    }
-    sd_notify(0, "STATUS=All replies received. Done.");
 }
 
 int main(int argc, char *argv[]) {
@@ -114,22 +127,21 @@ int main(int argc, char *argv[]) {
     QCoreApplication::setApplicationVersion(appVersion);
     QCoreApplication::setOrganizationDomain(orgDomain);
     QCoreApplication::setOrganizationName(orgName);
-    QSettings settings;
+    QSettings settings(settingsFilePath);
     if (!QDBusConnection::systemBus().isConnected()) {
-        sd_notify(0, "STATUS=Failed to connect to the system bus.\nERRNO=111");
+        sd_notify(0, "STATUS=Failed to connect to the system bus.\nERRNO=111\nSTOPPING=1");
         qFatal("Failed to connect to the system bus.");
     }
     SystemdManager manager(systemd1Domain, systemd1Path, QDBusConnection::systemBus());
     if (!manager.isValid()) {
-        sd_notify(0, "STATUS=Failed to connect to the system bus.\nERRNO=38");
+        sd_notify(0, "STATUS=Failed to connect to the system bus.\nERRNO=38\nSTOPPING=1");
         qFatal("Failed to create a valid interface for org.freedesktop.systemd1.");
     }
-    const auto files = settings.value(settingsKeyFiles).toStringList();
-    const auto ifaceName = settings.value(settingsKeyInterface).toString();
-    const auto services = settings.value(settingsKeyServices).toStringList();
     sd_notify(0, "READY=1");
-    Cidr::Value newCidr, priorCidr = Cidr::current(ifaceName);
-    doUpdates(priorCidr, files, services, manager);
+    doUpdates(Cidr::current(settings.value(settingsKeyInterface).toString()),
+              settings.value(settingsKeyFiles).toStringList(),
+              settings.value(settingsKeyServices).toStringList(),
+              manager);
     sd_notify(0, "STOPPING=1");
     return app.exec();
 }
