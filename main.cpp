@@ -132,31 +132,37 @@ int main(int argc, char *argv[]) {
     QSettings settings;
     if (!QDBusConnection::systemBus().isConnected()) {
         sd_notify(0, "STATUS=Failed to connect to the system bus.\nERRNO=111\nSTOPPING=1");
-        qFatal("Failed to connect to the system bus.");
+        qCCritical(LOG_IPV6_CONFIG_UPDATE) << "Failed to connect to the system bus.";
+        return 1;
     }
     SystemdManager manager(systemd1Domain, systemd1Path, QDBusConnection::systemBus());
     if (!manager.isValid()) {
         sd_notify(0, "STATUS=Failed to connect to the system bus.\nERRNO=38\nSTOPPING=1");
-        qFatal("Failed to create a valid interface for org.freedesktop.systemd1.");
+        qCCritical(LOG_IPV6_CONFIG_UPDATE)
+            << "Failed to create a valid interface for org.freedesktop.systemd1.";
+        return 1;
     }
     sd_notify(0, "READY=1");
-    auto interface = settings.value(settingsKeyInterface).toString();
+    const auto interface = settings.value(settingsKeyInterface).toString();
     if (interface.isEmpty()) {
         sd_notify(0, "STATUS=Invalid interface (empty).\nERRNO=38\nSTOPPING=1");
-        qFatal("No interface specified.");
+        qCCritical(LOG_IPV6_CONFIG_UPDATE) << "No interface specified.";
+        return 1;
     }
-    auto prefixLength = settings.value(settingsKeyPrefixLength, 56).toUInt();
+    const auto prefixLength = settings.value(settingsKeyPrefixLength, 56).toUInt();
     if ((prefixLength % 8) != 0) {
         sd_notify(0, "STATUS=Invalid prefix length.\nERRNO=38\nSTOPPING=1");
-        qFatal("Only prefix lengths of multiples of 8 are supported.");
+        qCCritical(LOG_IPV6_CONFIG_UPDATE)
+            << "Only prefix lengths of multiples of 8 are supported.";
+        return 1;
     }
+    const auto units = settings.value(settingsKeyUnits).toStringList();
+    const auto files = settings.value(settingsKeyFiles).toStringList();
     qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Prefix length:" << prefixLength;
     qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Interface:" << interface;
-    doUpdates(Cidr::current(interface, prefixLength),
-              settings.value(settingsKeyFiles).toStringList(),
-              settings.value(settingsKeyUnits).toStringList(),
-              manager,
-              prefixLength);
+    qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Files to update:" << files;
+    qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Units:" << units;
+    doUpdates(Cidr::current(interface, prefixLength), files, units, manager, prefixLength);
     sd_notify(0, "STOPPING=1");
     return 0;
 }
