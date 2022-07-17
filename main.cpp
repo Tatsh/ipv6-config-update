@@ -81,7 +81,7 @@ void doUpdates(const Cidr::Value &cidr,
         return;
     }
     qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Generated CIDR:" << cidr;
-    QRegExp re(cidrRe.arg(cidr.string().left(2)).arg(prefixLength).trimmed());
+    QRegularExpression re(cidrRe.arg(cidr.string().left(2)).arg(prefixLength).trimmed());
     qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Regular expression:" << re.pattern();
     bool needsRestarts = false;
     for (auto fileName : files) {
