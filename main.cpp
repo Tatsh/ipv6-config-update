@@ -13,7 +13,7 @@
 
 const QString appName = QStringLiteral("ipv6-config-update");
 const QString appVersion = QStringLiteral("0.0.1");
-const QString cidrRe = QStringLiteral("%1[0-9]{2}:.*/%2");
+const QString cidrRe = QStringLiteral("%1[0-9]{2}:[^/]+/%2");
 const QString orgDomain = QStringLiteral("sh.tat.ipv6-config-update");
 const QString orgName = QStringLiteral("Tatsh");
 const QString settingsKeyFiles = QStringLiteral("main/files");
