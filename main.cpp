@@ -23,7 +23,7 @@ const QString settingsKeyPrefixLength = QStringLiteral("prefixLength");
 const QString settingsKeyUnits = QStringLiteral("units");
 const QString slashFormat = QStringLiteral("%1/%2");
 const QString systemd1Domain = QStringLiteral("org.freedesktop.systemd1");
-const QString systemd1Path = QStringLiteral("org/freedesktop/systemd1");
+const QString systemd1Path = QStringLiteral("/org/freedesktop/systemd1");
 const QString unitModeReplace = QStringLiteral("replace");
 
 namespace Cidr {
