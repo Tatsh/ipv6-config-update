@@ -1,14 +1,8 @@
 # Compiled
-# *.com
-*.class
 *.dll
 *.exe
 *.o
 *.so
-*.pyc
-*.pyo
-__pycache__/
-*.egg-info/
 
 # Backups
 *~
