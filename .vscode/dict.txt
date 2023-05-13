@@ -6,8 +6,10 @@ autosort
 autouic
 bytearray
 classinfo
+classname
 cmake
 confdir
+configdebug
 dbus
 dbusinterfacedir
 ehthumbs
@@ -17,10 +19,12 @@ gmock
 gpgsign
 gtest
 ifup
+ipwatch
 iwyu
 kauth
 kdev
 killall
+libsystemd
 lmrc
 logdir
 logfile
