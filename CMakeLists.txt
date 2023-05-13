@@ -22,7 +22,7 @@ feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
-set(IPWATCH_SRCS main.cpp)
+set(IPWATCH_SRCS cidr.cpp main.cpp utils.cpp)
 include(ECMQtDeclareLoggingCategory)
 set(SYSTEMD1_MANAGER_XML manager.xml)
 set_source_files_properties(${SYSTEMD1_MANAGER_XML} PROPERTIES CLASSNAME SystemdManager)

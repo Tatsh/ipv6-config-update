@@ -8,8 +8,10 @@
 #include <QtNetwork/QNetworkInterface>
 #include <systemd/sd-daemon.h>
 
+#include "cidr.h"
 #include "ipv6configdebug.h"
 #include "systemd1_interface.h"
+#include "utils.h"
 
 const QString appName = QStringLiteral("ipv6-config-update");
 const QString appVersion = QStringLiteral("0.0.1");
@@ -20,55 +22,15 @@ const QString settingsKeyFiles = QStringLiteral("main/files");
 const QString settingsKeyInterface = QStringLiteral("main/interface");
 const QString settingsKeyPrefixLength = QStringLiteral("main/prefixLength");
 const QString settingsKeyUnits = QStringLiteral("main/units");
-const QString slashFormat = QStringLiteral("%1/%2");
 const QString systemd1Domain = QStringLiteral("org.freedesktop.systemd1");
 const QString systemd1Path = QStringLiteral("/org/freedesktop/systemd1");
 const QString unitModeReplace = QStringLiteral("replace");
-
-namespace Cidr {
-class Value {
-public:
-    explicit Value(QString string, bool isValid = false) : m_string(string), m_isValid(isValid) {
-    }
-    Value(bool isValid = false) : m_isValid(isValid) {
-    }
-    bool isValid() const {
-        return m_isValid;
-    }
-    bool operator!=(const Value &b) const {
-        return m_string != b.m_string;
-    }
-    QString string() const {
-        return m_string;
-    }
-
-private:
-    QString m_string;
-    bool m_isValid;
-};
-
-QDebug operator<<(QDebug debug, const Value &v) {
-    QDebugStateSaver saver(debug);
-    debug.nospace() << v.string();
-    return debug;
-}
-
-inline Value toCidr(const int prefixLength, const Q_IPV6ADDR &val_) {
-    auto val = Q_IPV6ADDR(val_);
-    std::fill(val.c + (prefixLength / 8), val.c + 16, 0);
-    auto asString = QHostAddress(val).toString();
-    return Value(slashFormat.arg(asString).arg(prefixLength), !asString.isEmpty());
-}
-
-inline Value current(const QString &interfaceName_, const uint prefixLength) {
-    for (auto entry : QNetworkInterface::interfaceFromName(interfaceName_).addressEntries()) {
-        if (entry.ip().isGlobal() && entry.ip().protocol() == QAbstractSocket::IPv6Protocol) {
-            return toCidr(prefixLength, entry.ip().toIPv6Address());
-        }
-    }
-    return Value();
-}
-} // namespace Cidr
+const QString messageFailedToConnectToBus = QStringLiteral("Failed to connect to system bus.");
+const QString messageFailedToCreateSystemd1Interface =
+    QStringLiteral("Failed to create a valid interface for org.freedesktop.systemd1.");
+const QString messageInvalidInterfaceEmpty = QStringLiteral("Interface value is empty.");
+const QString messageInvalidPrefixLength =
+    QStringLiteral("Invalid prefix length. Must be multiple of 8.");
 
 void doUpdates(const Cidr::Value &cidr,
                const QStringList &files,
@@ -131,36 +93,27 @@ int main(int argc, char *argv[]) {
     QCoreApplication::setOrganizationName(orgName);
     QSettings settings;
     if (!QDBusConnection::systemBus().isConnected()) {
-        sd_notify(0, "STATUS=Failed to connect to the system bus.\nERRNO=111\nSTOPPING=1");
-        qCCritical(LOG_IPV6_CONFIG_UPDATE) << "Failed to connect to the system bus.";
-        return 1;
+        sdNotifyErrorStopping(messageFailedToConnectToBus, 111);
     }
     SystemdManager manager(systemd1Domain, systemd1Path, QDBusConnection::systemBus());
     if (!manager.isValid()) {
-        sd_notify(0, "STATUS=Failed to connect to the system bus.\nERRNO=38\nSTOPPING=1");
-        qCCritical(LOG_IPV6_CONFIG_UPDATE)
-            << "Failed to create a valid interface for org.freedesktop.systemd1.";
-        return 1;
+        sdNotifyErrorStopping(messageFailedToCreateSystemd1Interface, 38);
     }
     sd_notify(0, "READY=1");
-    const auto interface = settings.value(settingsKeyInterface).toString();
-    if (interface.isEmpty()) {
-        sd_notify(0, "STATUS=Invalid interface (empty).\nERRNO=38\nSTOPPING=1");
-        qCCritical(LOG_IPV6_CONFIG_UPDATE) << "No interface specified.";
-        return 1;
-    }
-    const auto prefixLength = settings.value(settingsKeyPrefixLength, 56).toUInt();
-    if ((prefixLength % 8) != 0) {
-        sd_notify(0, "STATUS=Invalid prefix length.\nERRNO=38\nSTOPPING=1");
-        qCCritical(LOG_IPV6_CONFIG_UPDATE)
-            << "Only prefix lengths of multiples of 8 are supported.";
-        return 1;
-    }
-    const auto units = settings.value(settingsKeyUnits).toStringList();
     const auto files = settings.value(settingsKeyFiles).toStringList();
-    qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Prefix length:" << prefixLength;
-    qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Interface:" << interface;
+    const auto interface = settings.value(settingsKeyInterface).toString();
+    const auto prefixLength = settings.value(settingsKeyPrefixLength, 56).toUInt();
+    const auto units = settings.value(settingsKeyUnits).toStringList();
+    if (interface.isEmpty()) {
+        sdNotifyErrorStopping(messageInvalidInterfaceEmpty, 38);
+    }
+    if ((prefixLength % 8) != 0) {
+        sdNotifyErrorStopping(messageInvalidPrefixLength, 38);
+        return 1;
+    }
     qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Files to update:" << files;
+    qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Interface:" << interface;
+    qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Prefix length:" << prefixLength;
     qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Units:" << units;
     doUpdates(Cidr::current(interface, prefixLength), files, units, manager, prefixLength);
     sd_notify(0, "STOPPING=1");
