@@ -1,9 +1,9 @@
 {
   "configurations": [
     {
-      "cStandard": "gnu17",
+      "cStandard": "gnu20",
       "compilerPath": "/usr/bin/gcc",
-      "cppStandard": "gnu++17",
+      "cppStandard": "gnu++20",
       "defines": [
         "QT_NO_CAST_FROM_ASCII",
         "QT_NO_CAST_FROM_BYTEARRAY",
