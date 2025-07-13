@@ -1,0 +1,46 @@
+.TH IPV6-CONFIG-UPDATE 1 "July 2025" "ipv6-config-update 0.0.0"
+.SH NAME
+ipv6-config-update \- periodically update config files and restart services on IPv6 address change
+.SH SYNOPSIS
+.B ipv6-config-update
+.RI [ options ]
+.SH DESCRIPTION
+.B ipv6-config-update
+is a utility and daemon that monitors the system's IPv6 address. When a change is detected, it
+updates relevant config files and restarts specified services to ensure continued correct operation.
+This is useful for systems with dynamic IPv6 addresses, such as those using DHCPv6 or SLAAC.
+
+.SH OPTIONS
+.TP
+.BR \-c ", " \-\-config " " FILE
+Specify the path to the config file.
+.TP
+.BR \-f ", " \-\-foreground
+Run in foreground.
+.TP
+.BR \-h ", " \-\-help
+Display help and exit.
+.TP
+.BR \-v ", " \-\-version
+Display version information and exit.
+
+.SH CONFIGURATION
+The config file specifies which files to update and which services to restart. See the example
+config file for details.
+
+.SH FILES
+.TP
+.I /etc/ipv6-config-update.conf
+Default config file.
+
+.SH EXIT STATUS
+Zero indicates success. Non-zero indicates an error.
+
+.SH SEE ALSO
+.BR systemd (1)
+
+.SH AUTHOR
+Written by the ipv6-config-update contributors.
+
+.SH COPYRIGHT
+Copyright 2025. Licensed under the MIT License.

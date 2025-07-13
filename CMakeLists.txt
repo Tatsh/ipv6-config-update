@@ -55,4 +55,5 @@ add_definitions(
 add_subdirectory(src)
 
 install(TARGETS ${CMAKE_PROJECT_NAME})
+install(FILES man/${CMAKE_PROJECT_NAME}.1 TYPE MAN)
 include(CPack)

@@ -6,6 +6,7 @@
       "CITATION.cff",
       "CMakeLists.txt",
       "README.md",
+      "man/ipv6-config-update.1",
       "package.json",
       "vcpkg.json"
     ],
