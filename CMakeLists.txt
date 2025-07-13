@@ -56,4 +56,6 @@ add_subdirectory(src)
 
 install(TARGETS ${CMAKE_PROJECT_NAME})
 install(FILES man/${CMAKE_PROJECT_NAME}.1 TYPE MAN)
+install(FILES ${CMAKE_PROJECT_NAME}.service ${CMAKE_PROJECT_NAME}.timer
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/systemd/system)
 include(CPack)
