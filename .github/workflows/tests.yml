@@ -28,19 +28,15 @@ jobs:
         run: cmake --install ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
       - name: Run tests
         run: ctest --test-dir ${{github.workspace}}/build/src
-      - if: ${{ matrix.build-type == 'Debug' && matrix.os == 'ubuntu-24.04' }}
+      - if: ${{ matrix.build-type == 'Debug' }}
         name: Generate coverage information
         run: >-
-          geninfo
-          '--include=src/*'
-          '--exclude=google*/*'
-          --exclude=test.cpp
-          -b ${{github.workspace}}
-          -o coverage1.info
-          ${{github.workspace}}/build/src/CMakeFiles/ipv6-config-update-tests.dir
-      - if: ${{ matrix.build-type == 'Debug' && matrix.os == 'ubuntu-24.04' }}
+          lcov -c -d ${{github.workspace}}/build -o coverage1.info --ignore-errors inconsistent
+      - if: ${{ matrix.build-type == 'Debug' }}
         name: Coveralls
-        run: coveralls -i src -e src/test.cpp
+        uses: coverallsapp/github-action@v2
+        with:
+          file: coverage1.info
     strategy:
       fail-fast: false
       matrix:

@@ -12,6 +12,7 @@ codeowners
 colorstyle
 configdebug
 coveragerc
+coverallsapp
 cpptools
 ctest
 datarootdir
