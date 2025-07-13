@@ -1,6 +1,6 @@
 #include <systemd/sd-daemon.h>
 
-#include "ipv6configdebug.h"
+#include "ipwatchdebug.h"
 #include "utils.h"
 
 void sdNotifyErrorStopping(const QString &status, int errorNumber) noexcept {

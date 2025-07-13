@@ -1,9 +1,9 @@
 {
   "configurations": [
     {
-      "cStandard": "gnu20",
+      "cStandard": "gnu23",
       "compilerPath": "/usr/bin/gcc",
-      "cppStandard": "gnu++20",
+      "cppStandard": "gnu++23",
       "defines": [
         "QT_NO_CAST_FROM_ASCII",
         "QT_NO_CAST_FROM_BYTEARRAY",
@@ -12,16 +12,15 @@
         "QT_NO_URL_CAST_FROM_STRING",
         "QT_STRICT_ITERATORS",
         "QT_USE_FAST_OPERATOR_PLUS",
-        "QT_USE_QSTRINGBUILDER"
+        "QT_USE_QSTRINGBUILDER",
+        "VERSION=\"unknown\""
       ],
       "includePath": [
+        "${workspaceFolder}/build/src",
+        "${workspaceFolder}/build/src/generated",
         "${workspaceFolder}/src/**",
-        "${workspaceFolder}/build/rcvpn-helper_autogen/include",
-        "${workspaceFolder}/build/generated",
-        "/usr/include/KF5/KAuthCore",
-        "/usr/include/KF5/KCoreAddons",
-        "/usr/include/qt5",
-        "/usr/include/qt5/QtCore"
+        "/usr/include/qt6",
+        "/usr/include/qt6/QtCore"
       ],
       "name": "Linux"
     }

@@ -9,7 +9,7 @@
 #include <systemd/sd-daemon.h>
 
 #include "cidr.h"
-#include "ipv6configdebug.h"
+#include "ipwatchdebug.h"
 #include "systemd1_interface.h"
 #include "utils.h"
 
@@ -67,7 +67,7 @@ void doUpdates(const Cidr::Value &cidr,
     }
     if (needsRestarts) {
         sd_notify(0, "STATUS=Restarting units");
-        QList<QDBusPendingReply<>> replies;
+        QList<QDBusPendingReply<QString>> replies;
         for (auto serviceName : units) {
             qCDebug(LOG_IPV6_CONFIG_UPDATE) << "Restarting" << serviceName;
             replies << manager.ReloadOrRestartUnit(serviceName, unitModeReplace);

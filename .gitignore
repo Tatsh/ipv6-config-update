@@ -1,31 +1,20 @@
-# Compiled
-*.dll
-*.exe
-*.o
-*.so
-
-# Backups
-*~
-*.swp*
+*.info
 *.kate-swp
-
-# KDevelop
-.kdev4/
-
-# Miscellaneous
-*.sqlite
-
-# OS generated files
-.directory
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100/
-.Trashes/
-ehthumbs.db
-Thumbs.db
-
 *.log
-build/
-install/
+*~
+.*.swp
+.*_cache/
+.coverage
+.cspellcache
+.directory
+.pnp.*
+/.yarn/install-state.gz
+/CMakeUserPresets.json
+/build/
+/dist/
+/docs/_build/
+/man/_static/
+/vcpkg_installed/
+__pycache__/
+htmlcov/
 node_modules/

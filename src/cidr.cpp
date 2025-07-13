@@ -1,3 +1,5 @@
+#include <QtCore/QDebugStateSaver>
+
 #include "cidr.h"
 
 const QString slashFormat = QStringLiteral("%1/%2");
