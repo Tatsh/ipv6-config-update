@@ -15,7 +15,7 @@ jobs:
         run: |
           pipx install cpp-coveralls
           sudo apt-get update
-          sudo apt-get install -y qt6-base-dev extra-cmake-modules lcov
+          sudo apt-get install -y qt6-base-dev extra-cmake-modules lcov libsystemd-dev
       - name: Configure
         run: >-
           cmake -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -B ${{github.workspace}}/build
