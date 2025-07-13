@@ -28,11 +28,11 @@ jobs:
         run: cmake --install ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
       - name: Run tests
         run: ctest --test-dir ${{github.workspace}}/build/src
-      - if: ${{ matrix.build-type == 'Debug' }}
+      - if: ${{ matrix.build-type == 'Debug' && matrix.os == 'ubuntu-24.04' }}
         name: Generate coverage information
         run: >-
-          lcov -c -d ${{github.workspace}}/build -o coverage1.info --ignore-errors inconsistent
-      - if: ${{ matrix.build-type == 'Debug' }}
+          lcov -c -d ${{github.workspace}}/build -o coverage1.info --ignore-errors inconsistent,mismatch
+      - if: ${{ matrix.build-type == 'Debug' && matrix.os == 'ubuntu-24.04' }}
         name: Coveralls
         uses: coverallsapp/github-action@v2
         with:
