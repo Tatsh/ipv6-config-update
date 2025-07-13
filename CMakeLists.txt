@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.31)
-project(ipv6-config-update VERSION 0.0.0)
+project(ipv6-config-update VERSION 0.0.1)
 
 find_package(ECM NO_MODULE REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})

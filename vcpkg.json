@@ -15,5 +15,5 @@
   "license": "MIT",
   "maintainers": ["Andrew Udvare <audvare@gmail.com>"],
   "name": "ipv6-config-update",
-  "version": "0.0.0"
+  "version": "0.0.1"
 }

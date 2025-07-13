@@ -16,7 +16,7 @@ local utils = import 'utils.libjsonnet';
     },
   ],
   project_name: 'ipv6-config-update',
-  version: '0.0.0',
+  version: '0.0.1',
   description: 'Update IPv6 CIDR in config files and restart relevant systemd units.',
   keywords: ['linux', 'qt', 'cmake', 'systemd', 'ipv6', 'configuration management'],
   copilot: {
