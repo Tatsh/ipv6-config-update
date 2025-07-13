@@ -14,6 +14,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(INSTALL_GTEST OFF)
 
 option(BUILD_DOCS "Build documentation." OFF)
 option(BUILD_TESTS "Build tests." OFF)
