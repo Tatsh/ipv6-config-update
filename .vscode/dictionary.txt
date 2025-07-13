@@ -1,3 +1,5 @@
+autobuild
+autoinstall
 automoc
 autorcc
 autosort
