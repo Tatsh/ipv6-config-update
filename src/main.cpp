@@ -14,7 +14,6 @@
 #include "utils.h"
 
 const QString appName = QStringLiteral("ipv6-config-update");
-const QString appVersion = QStringLiteral("0.0.1");
 const QString cidrRe = QStringLiteral("%1[0-9]{2}:[^/]+/%2");
 const QString orgDomain = QStringLiteral("sh.tat.ipv6-config-update");
 const QString orgName = QStringLiteral("Tatsh");
@@ -88,7 +87,7 @@ void doUpdates(const Cidr::Value &cidr,
 int main(int argc, char *argv[]) {
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName(appName);
-    QCoreApplication::setApplicationVersion(appVersion);
+    QCoreApplication::setApplicationVersion(QString::fromLocal8Bit(VERSION));
     QCoreApplication::setOrganizationDomain(orgDomain);
     QCoreApplication::setOrganizationName(orgName);
     QSettings settings;
