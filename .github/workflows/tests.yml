@@ -31,7 +31,10 @@ jobs:
       - if: ${{ matrix.build-type == 'Debug' && matrix.os == 'ubuntu-24.04' }}
         name: Generate coverage information
         run: >-
-          lcov -c -d ${{github.workspace}}/build -o coverage1.info --ignore-errors inconsistent,mismatch
+          lcov -c -d ${{github.workspace}}/build -o coverage1.info
+          --ignore-errors inconsistent,mismatch
+          --include src
+          --exclude test.cpp
       - if: ${{ matrix.build-type == 'Debug' && matrix.os == 'ubuntu-24.04' }}
         name: Coveralls
         uses: coverallsapp/github-action@v2
