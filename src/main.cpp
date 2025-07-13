@@ -42,7 +42,7 @@ void doUpdates(const Cidr::Value &cidr,
     if (!cidr.isValid()) {
         auto message = QCoreApplication::translate("", "Invalid CIDR: %1").arg(cidr.string());
         qCCritical(LOG_IPV6_CONFIG_UPDATE) << message;
-        sd_notify(0, "STATUS=Could not get current CIDR\nERRNO=22");
+        sd_notify(0, "STATUS=Could not get current CIDR.\nERRNO=22");
         return;
     }
     auto message = QCoreApplication::translate("", "Generated CIDR: %1").arg(cidr.string());
@@ -68,7 +68,7 @@ void doUpdates(const Cidr::Value &cidr,
         f.seek(0);
         message = QCoreApplication::translate("", "Writing %1.").arg(fileName);
         qCDebug(LOG_IPV6_CONFIG_UPDATE) << message;
-        sd_notify(0, "STATUS=Updating config file");
+        sd_notify(0, "STATUS=Updating config file.");
         f.write(content.toLocal8Bit());
         f.close();
         needsRestarts = true;
@@ -83,7 +83,7 @@ void doUpdates(const Cidr::Value &cidr,
         }
         qCDebug(LOG_IPV6_CONFIG_UPDATE)
             << QCoreApplication::translate("", "Waiting for D-Bus replies.");
-        sd_notify(0, "STATUS=Waiting for D-Bus replies");
+        sd_notify(0, "STATUS=Waiting for D-Bus replies.");
         for (auto reply : replies) {
             reply.waitForFinished();
             message = QCoreApplication::translate("", "Reply arg(0): %1")
