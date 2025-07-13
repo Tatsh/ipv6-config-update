@@ -1,5 +1,4 @@
-#ifndef CIDR_H
-#define CIDR_H
+#pragma once
 
 #include <QtCore/QString>
 #include <QtNetwork/QNetworkInterface>
@@ -24,5 +23,3 @@ QDebug operator<<(QDebug debug, const Cidr::Value &v);
 Value toCidr(const int prefixLength, const Q_IPV6ADDR &val_);
 Value current(const QString &interfaceName_, const uint prefixLength);
 } // namespace Cidr
-
-#endif // CIDR_H
