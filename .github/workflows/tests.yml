@@ -28,7 +28,7 @@ jobs:
         run: cmake --install ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
       - name: Run tests
         run: ctest --test-dir ${{github.workspace}}/build/src
-      - if: ${{ matrix.build-type == 'Debug' }}
+      - if: ${{ matrix.build-type == 'Debug' && matrix.os == 'ubuntu-24.04' }}
         name: Generate coverage information
         run: >-
           geninfo
@@ -37,10 +37,10 @@ jobs:
           --exclude=test.cpp
           -b ${{github.workspace}}
           -o coverage1.info
-          ${{github.workspace}}/build/src/CMakeFiles/ifup-systemd-resolved-tests.dir
-      - if: ${{ matrix.build-type == 'Debug' }}
+          ${{github.workspace}}/build/src/CMakeFiles/ipv6-config-update-tests.dir
+      - if: ${{ matrix.build-type == 'Debug' && matrix.os == 'ubuntu-24.04' }}
         name: Coveralls
-        run: coveralls -i src -e src/specialtypes.cpp -e src/test.cpp '--exclude-lines-pattern=^\}$'
+        run: coveralls -i src -e src/test.cpp
     strategy:
       fail-fast: false
       matrix:
