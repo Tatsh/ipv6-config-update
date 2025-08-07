@@ -12,12 +12,13 @@ include(GNUInstallDirs)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(INSTALL_GTEST OFF)
 
 option(BUILD_DOCS "Build documentation." OFF)
 option(BUILD_TESTS "Build tests." OFF)
+option(COVERAGE "Enable code coverage." OFF)
+option(INSTALL_DOCS "Install documentation." OFF)
 
 if(BUILD_DOCS)
   find_package(Doxygen REQUIRED)
@@ -27,15 +28,20 @@ if(BUILD_DOCS)
     docs
     COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-  install(
-    DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs/html
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/doc/${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION})
+  if(INSTALL_DOCS)
+    install(
+      DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs/html
+      DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/doc/${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION})
+  endif()
 endif()
 
 find_package(
   Qt6
   COMPONENTS DBus Network
   REQUIRED CONFIG)
+if(BUILD_TESTS)
+  find_package(Qt6Test REQUIRED)
+endif()
 set_package_properties(Qt6DBus PROPERTIES TYPE REQUIRED)
 set_package_properties(Qt6Network PROPERTIES TYPE REQUIRED)
 pkg_check_modules(LIBSYSTEMD libsystemd REQUIRED)
@@ -58,5 +64,5 @@ add_subdirectory(src)
 install(TARGETS ${CMAKE_PROJECT_NAME})
 install(FILES man/${CMAKE_PROJECT_NAME}.1 TYPE MAN)
 install(FILES ${CMAKE_PROJECT_NAME}.service ${CMAKE_PROJECT_NAME}.timer
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/systemd/system)
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/systemd/system)
 include(CPack)

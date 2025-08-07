@@ -16,13 +16,15 @@
 
 This program updates configuration files which contain a CIDR of your IPv6 network. An example
 would be `smb.conf` under the `hosts allow` option. If an update is made on this file, you may want
-to reload the `smb` unit. This application is fully controlled by settings which are located at
-`/etc/ipv6-config-update.conf`.
+to reload the `smb` unit. This application is fully controlled by settings.
 
 You may want this to run periodically if your ISP uses DHCPv6 and may change the IP randomly
 (or when the lease expires).
 
 ## Settings
+
+Located in XDG location such as `~/.config/Tatsh/ipv6-config-update.conf`. If running as root,
+`/etc/ipv6-config-update.conf` will be used.
 
 ```ini
 [main]

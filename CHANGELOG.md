@@ -9,6 +9,17 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.0] - 2025-08-08
+
+### Added
+
+- More log messages.
+
+### Fixed
+
+- Fixed reading configuration from `/etc`.
+- Fixed installation of systemd units.
+
 ## [0.0.1] - 2025-00-00
 
 First version.

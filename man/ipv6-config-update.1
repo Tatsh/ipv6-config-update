@@ -31,7 +31,8 @@ config file for details.
 .SH FILES
 .TP
 .I /etc/ipv6-config-update.conf
-Default config file.
+Default config file if running as root. Otherwise XDG data path is used (example:
+~/.config/Tatsh/ipv6-config-update.conf).
 
 .SH EXIT STATUS
 Zero indicates success. Non-zero indicates an error.

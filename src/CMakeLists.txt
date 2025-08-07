@@ -6,7 +6,14 @@ if(CMAKE_BUILD_TYPE STREQUAL Debug AND (CMAKE_CXX_COMPILER_ID STREQUAL GNU OR CM
 endif()
 set(QT_DEPS Qt6::DBus Qt6::Network)
 
-set(LIBIPWATCH_SRCS cidr.cpp cidr.h utils.cpp utils.h)
+set(LIBIPWATCH_SRCS
+    cidr.cpp
+    cidr.h
+    constants.h
+    networkinfo.h
+    systemdutil.h
+    updater.cpp
+    updater.h)
 set(SYSTEMD1_MANAGER_XML manager.xml)
 
 set_source_files_properties(${SYSTEMD1_MANAGER_XML} PROPERTIES CLASSNAME SystemdManager)
@@ -32,18 +39,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ipwatch ${QT_DEPS} ${LIBSYST
 
 if(BUILD_TESTS)
   enable_testing()
-  include(FetchContent)
-  FetchContent_Declare(googletest
-                       URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip)
-  FetchContent_MakeAvailable(googletest)
-  add_executable(${CMAKE_PROJECT_NAME}-tests test.cpp)
-  target_compile_options(${CMAKE_PROJECT_NAME}-tests PRIVATE ${DEBUG_FLAGS})
-  if(CMAKE_COMPILER_IS_GNUCXX)
-    target_compile_options(${CMAKE_PROJECT_NAME}-tests PRIVATE --coverage)
-  endif()
-  target_link_libraries(
-    ${CMAKE_PROJECT_NAME}-tests PRIVATE ipwatch ${QT_DEPS} GTest::gtest_main GTest::gmock gcov
-                                        ${LIBSYSTEMD_LIBRARIES})
-  include(GoogleTest)
-  gtest_discover_tests(${CMAKE_PROJECT_NAME}-tests)
+  add_subdirectory(autotests)
 endif()
