@@ -9,6 +9,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.1.1]
+
+### Added
+
+- API documentation.
+
 ## [0.1.0] - 2025-08-08
 
 ### Added
@@ -25,4 +31,4 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 First version.
 
-[unreleased]: https://github.com/Tatsh/ipv6-config-update/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/Tatsh/ipv6-config-update/compare/v0.1.1...HEAD
