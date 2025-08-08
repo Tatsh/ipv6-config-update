@@ -5,6 +5,7 @@
       ".wiswa.jsonnet",
       "CITATION.cff",
       "CMakeLists.txt",
+      "Doxyfile.in",
       "README.md",
       "man/ipv6-config-update.1",
       "package.json",
