@@ -30,6 +30,7 @@ geninfo
 ggdb
 gmock
 gnucxx
+graphviz
 gtest
 htmlcov
 interprocedural
