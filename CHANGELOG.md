@@ -13,6 +13,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Option to install documentation.
 - More log messages.
 
 ### Fixed
@@ -24,4 +25,4 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 First version.
 
-[unreleased]: https://github.com/Tatsh/ipv6-config-update/compare/v0.0.1...HEAD
+[unreleased]: https://github.com/Tatsh/ipv6-config-update/compare/v0.1.0...HEAD
