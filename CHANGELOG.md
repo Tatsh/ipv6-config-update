@@ -32,3 +32,6 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 First version.
 
 [unreleased]: https://github.com/Tatsh/ipv6-config-update/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/Tatsh/ipv6-config-update/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/Tatsh/ipv6-config-update/compare/v0.0.1...v0.1.0
+[0.0.1]: https://github.com/Tatsh/ipv6-config-update/releases/tag/v0.0.1
