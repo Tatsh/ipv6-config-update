@@ -21,16 +21,17 @@ option(COVERAGE "Enable code coverage." OFF)
 option(INSTALL_DOCS "Install documentation." OFF)
 
 if(BUILD_DOCS)
-  find_package(Doxygen REQUIRED)
-  set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${DOXYGEN_OUT} @ONLY)
-  add_custom_target(
-    docs
-    COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  set(DOXYGEN_EXCLUDE_PATTERNS */autotests/*)
+  set(DOXYGEN_GENERATE_TAGFILE "${CMAKE_BINARY_DIR}/html/${CMAKE_PROJECT_NAME}.tags")
+  set(DOXYGEN_INTERACTIVE_SVG YES)
+  set(DOXYGEN_MARKDOWN_ID_STYLE GITHUB)
+  set(DOXYGEN_USE_MDFILE_AS_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md")
+  set(DOXYGEN_TAGFILES ./.docs/qtcore.tags=http://doc.qt.io/qt-6/)
+  find_package(Doxygen REQUIRED COMPONENTS dot)
+  doxygen_add_docs(docs README.md src ALL)
   if(INSTALL_DOCS)
     install(
-      DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/docs/html
+      DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
       DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/doc/${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION})
   endif()
 endif()
@@ -62,7 +63,7 @@ add_definitions(
 add_subdirectory(src)
 
 install(TARGETS ${CMAKE_PROJECT_NAME})
-install(FILES man/${CMAKE_PROJECT_NAME}.1 TYPE MAN)
+install(FILES man/${CMAKE_PROJECT_NAME}.1 DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/man/man1)
 install(FILES ${CMAKE_PROJECT_NAME}.service ${CMAKE_PROJECT_NAME}.timer
         DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/systemd/system)
 include(CPack)

@@ -19,6 +19,7 @@
       "*.1",
       "*.har",
       "*.lock",
+      "*.tags",
       ".git/**",
       ".yarn/**/*.cjs",
       ".vscode/extensions.json",

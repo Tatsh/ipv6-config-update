@@ -10,6 +10,7 @@
 *.libjsonnet
 *.lock
 *.log
+*.tags
 *~
 .*.swp
 .*_cache/
