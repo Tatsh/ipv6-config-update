@@ -19,12 +19,12 @@
       "*.1",
       "*.har",
       "*.lock",
-      "*.tags",
       ".git/**",
       ".yarn/**/*.cjs",
       ".vscode/extensions.json",
       "dist/**",
-      "man/**"
+      "man/**",
+      "*.tags"
     ],
     "language": "en-GB",
     "languageSettings": [
@@ -64,7 +64,7 @@
     }
   },
   "name": "ipv6-config-update",
-  "packageManager": "yarn@4.9.2",
+  "packageManager": "yarn@4.10.2",
   "prettier": {
     "endOfLine": "lf",
     "iniSpaceAroundEquals": true,

@@ -1,49 +1,66 @@
 local utils = import 'utils.libjsonnet';
 
-(import 'defaults.libjsonnet') + {
-  local top = self,
-  // General settings
-
-  // Shared
-  github_username: 'Tatsh',
-  security_policy_supported_versions: { '0.0.x': ':white_check_mark:' },
-  authors: [
-    {
-      'family-names': 'Udvare',
-      'given-names': 'Andrew',
-      email: 'audvare@gmail.com',
-      name: '%s %s' % [self['given-names'], self['family-names']],
-    },
-  ],
+{
+  security_policy_supported_versions: { '0.1.x': ':white_check_mark:' },
   project_name: 'ipv6-config-update',
   version: '0.1.1',
   description: 'Update IPv6 CIDR in config files and restart relevant systemd units.',
   keywords: ['linux', 'qt', 'cmake', 'systemd', 'ipv6', 'configuration management'],
-  copilot: {
+  copilot+: {
     intro: 'ipv6-config-update periodically checks if the IPv6 address has changed and updates configuration files and restarts services.',
   },
-  social+: {
-    mastodon+: { id: '109370961877277568' },
-  },
-
-  // GitHub
-  github+: {
-    funding+: {
-      ko_fi: 'tatsh2',
-      liberapay: 'tatsh2',
-      patreon: 'tatsh2',
+  want_codeql: false,
+  want_tests: false,
+  package_json+: {
+    cspell+: {
+      ignorePaths+: ['*.tags'],
     },
   },
-
+  vscode+: {
+    c_cpp+: {
+      configurations: [
+        {
+          cStandard: 'gnu23',
+          compilerPath: '/usr/bin/gcc',
+          cppStandard: 'gnu++23',
+          includePath: [
+            '${workspaceFolder}/build/src',
+            '${workspaceFolder}/build/src/generated',
+            '${workspaceFolder}/src/**',
+            '/usr/include/qt6',
+            '/usr/include/qt6/QtCore',
+          ],
+          name: 'Linux',
+        },
+      ],
+    },
+    settings+: {
+      'cmake.configureArgs': ['-DBUILD_TESTS=ON', '-DCOVERAGE=ON'],
+    },
+  },
+  prettierignore+: ['*.tags'],
+  cz+: {
+    commitizen+: {
+      version_files+: [
+        'man/ipv6-config-update.1',
+      ],
+    },
+  },
   // C++ only
   cmake+: {
     uses_qt: true,
   },
   project_type: 'c++',
   vcpkg+: {
-    dependencies: [{
-      name: 'ecm',
-      'version>=': '6.7.0',
-    }],
+    dependencies: [
+      {
+        name: 'ecm',
+        'version>=': '6.7.0',
+      },
+      {
+        name: 'qtbase',
+        'version>=': '6.8.3',
+      },
+    ],
   },
 }

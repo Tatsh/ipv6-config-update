@@ -5,12 +5,11 @@ autorcc
 autosort
 autouic
 bsky
-buglist
 buildsystems
 bytearray
 cidrtest
 codeowners
-colorstyle
+commitizen
 coveragerc
 coverallsapp
 cpptools
@@ -21,7 +20,6 @@ dbus
 dcmake
 dcoverage
 docstrings
-doxyfile
 dversion
 endfunction
 esbenp
@@ -44,9 +42,9 @@ libipwatch
 libjsonnet
 libsystemd
 mainpage
-mathjax
 mdfile
 networkinfo
+nullptr
 offscreen
 oneshot
 pycache
@@ -65,10 +63,7 @@ systemdutil
 tagfile
 tagfiles
 tatsh
-testlist
-todolist
 udvare
-undoc
 updatertest
 vcpkg
 werror

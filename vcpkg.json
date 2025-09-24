@@ -1,12 +1,12 @@
 {
   "dependencies": [
     {
-      "name": "qtbase",
-      "version>=": "6.8.3"
-    },
-    {
       "name": "ecm",
       "version>=": "6.7.0"
+    },
+    {
+      "name": "qtbase",
+      "version>=": "6.8.3"
     }
   ],
   "description": "Update IPv6 CIDR in config files and restart relevant systemd units.",
