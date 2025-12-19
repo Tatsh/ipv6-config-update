@@ -23,13 +23,13 @@ docstrings
 dversion
 endfunction
 esbenp
+foxundermoon
 gcov
 geninfo
 ggdb
 gmock
 gnucxx
 graphviz
-gtest
 htmlcov
 interprocedural
 ipwatch
@@ -38,6 +38,7 @@ iwyu
 jinja
 jsonnet
 jsonschema
+libera
 libipwatch
 libjsonnet
 libsystemd
@@ -47,7 +48,6 @@ networkinfo
 nullptr
 offscreen
 oneshot
-pycache
 pyyaml
 qcompare
 qstringbuilder
@@ -57,6 +57,7 @@ qtest
 qverify
 reflow
 schemafile
+shellformat
 srcs
 strequal
 systemdutil
@@ -65,7 +66,8 @@ tagfiles
 tatsh
 udvare
 updatertest
-vcpkg
+vedantmgoyal
 werror
 wextra
+winget
 wiswa
