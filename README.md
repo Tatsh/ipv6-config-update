@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/github/license/Tatsh/ipv6-config-update)](https://github.com/Tatsh/ipv6-config-update/blob/master/LICENSE.txt)
 [![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/ipv6-config-update/v0.1.1/master)](https://github.com/Tatsh/ipv6-config-update/compare/v0.1.1...master)
 [![CodeQL](https://github.com/Tatsh/ipv6-config-update/actions/workflows/codeql.yml/badge.svg)](https://github.com/Tatsh/ipv6-config-update/actions/workflows/codeql.yml)
- [![QA](https://github.com/Tatsh/ipv6-config-update/actions/workflows/qa.yml/badge.svg)](https://github.com/Tatsh/ipv6-config-update/actions/workflows/qa.yml)
+[![QA](https://github.com/Tatsh/ipv6-config-update/actions/workflows/qa.yml/badge.svg)](https://github.com/Tatsh/ipv6-config-update/actions/workflows/qa.yml)
 [![Tests](https://github.com/Tatsh/ipv6-config-update/actions/workflows/tests.yml/badge.svg)](https://github.com/Tatsh/ipv6-config-update/actions/workflows/tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/Tatsh/ipv6-config-update/badge.svg?branch=master)](https://coveralls.io/github/Tatsh/ipv6-config-update?branch=master)
 [![Dependabot](https://img.shields.io/badge/Dependabot-enabled-blue?logo=dependabot)](https://github.com/dependabot)
