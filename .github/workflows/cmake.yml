@@ -45,7 +45,7 @@ jobs:
         name: Rename with tag
         run: mv -v ${{github.workspace}}/ipv6-config-update-*.AppImage ${{github.workspace}}/ipv6-config-update-${{github.ref}}-x86_64.AppImage
       - name: 'Upload Artifacts'
-        uses: 'actions/upload-artifact@v6'
+        uses: 'actions/upload-artifact@v7'
         with:
           if-no-files-found: error
           name: ipv6-config-update-${{ matrix.build-type }}-Linux
