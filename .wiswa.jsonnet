@@ -9,6 +9,7 @@ local utils = import 'utils.libjsonnet';
   copilot+: {
     intro: 'ipv6-config-update periodically checks if the IPv6 address has changed and updates configuration files and restarts services.',
   },
+  clang_format_args: 'src/*.cpp src/*.h src/autotests/*.cpp',
   want_codeql: false,
   want_tests: false,
   package_json+: {
