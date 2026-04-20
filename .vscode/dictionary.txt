@@ -1,3 +1,4 @@
+Ångström
 appdir
 appimage
 autobuild
@@ -11,6 +12,7 @@ buildsystems
 bytearray
 cidrtest
 commitizen
+cooldown
 coveragerc
 coverallsapp
 cpack
@@ -22,9 +24,9 @@ dbus
 dcmake
 dcoverage
 docstrings
-dorny
 dversion
 endfunction
+esac
 esbenp
 foxundermoon
 gcov
@@ -52,10 +54,12 @@ mdfile
 mktemp
 mypy
 networkinfo
+npmjs
 nullptr
 offscreen
 oneline
 oneshot
+pylock
 qcompare
 qstringbuilder
 qtbase
@@ -64,6 +68,7 @@ qtest
 qverify
 reflow
 regen
+ripgreprc
 schemafile
 shellcheck
 shellformat
@@ -84,5 +89,5 @@ werror
 wextra
 winget
 wiswa
+wiswa's
 yarnrc
-ångström
