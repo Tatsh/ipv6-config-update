@@ -6,7 +6,6 @@
 [![GitHub tag (with filter)](https://img.shields.io/github/v/tag/Tatsh/ipv6-config-update)](https://github.com/Tatsh/ipv6-config-update/tags)
 [![License](https://img.shields.io/github/license/Tatsh/ipv6-config-update)](https://github.com/Tatsh/ipv6-config-update/blob/master/LICENSE.txt)
 [![GitHub commits since latest release (by SemVer including pre-releases)](https://img.shields.io/github/commits-since/Tatsh/ipv6-config-update/v0.1.1/master)](https://github.com/Tatsh/ipv6-config-update/compare/v0.1.1...master)
-[![QA](https://github.com/Tatsh/ipv6-config-update/actions/workflows/qa.yml/badge.svg)](https://github.com/Tatsh/ipv6-config-update/actions/workflows/qa.yml)
 [![Dependabot](https://img.shields.io/badge/Dependabot-enabled-blue?logo=dependabot)](https://github.com/dependabot)
 [![GitHub Pages](https://github.com/Tatsh/ipv6-config-update/actions/workflows/pages.yml/badge.svg)](https://tatsh.github.io/ipv6-config-update/)
 [![Stargazers](https://img.shields.io/github/stars/Tatsh/ipv6-config-update?logo=github&style=flat)](https://github.com/Tatsh/ipv6-config-update/stargazers)
