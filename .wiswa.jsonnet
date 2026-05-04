@@ -37,7 +37,7 @@ local utils = import 'utils.libjsonnet';
       'cmake.configureArgs': ['-DBUILD_TESTS=ON', '-DCOVERAGE=ON'],
     },
   },
-  prettierignore+: ['*.tags'],
+  prettierignore+: ['*.service', '*.tags', '*.timer'],
   cz+: {
     commitizen+: {
       version_files+: [

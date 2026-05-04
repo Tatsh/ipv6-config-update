@@ -11,7 +11,9 @@
 *.lock
 *.log
 *.min.js
+*.service
 *.tags
+*.timer
 *~
 .*.swp
 .*_cache/
