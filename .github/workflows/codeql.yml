@@ -17,7 +17,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y qt6-base-dev extra-cmake-modules libsystemd-dev
+          sudo apt-get install -y extra-cmake-modules libsystemd-dev qt6-base-dev
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:

@@ -1,9 +1,6 @@
 ---
 jobs:
   tests:
-    env:
-      COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -14,7 +11,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y qt6-base-dev extra-cmake-modules lcov libsystemd-dev
+          sudo apt-get install -y extra-cmake-modules lcov libsystemd-dev qt6-base-dev
       - name: Configure
         run: >-
           cmake -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -B ${{github.workspace}}/build
@@ -27,21 +24,19 @@ jobs:
       - name: Install
         run: cmake --install ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
       - name: Run tests
-        run: ctest -VV --test-dir ${{github.workspace}}/build/src
+        run: ctest --test-dir ${{github.workspace}}/build/src
         env:
           QT_QPA_PLATFORM: offscreen
           QT_QUICK_BACKEND: software
       - if: ${{ matrix.build-type == 'Debug' }}
         name: Generate coverage information
         run: >-
-          geninfo
+          lcov -c -d ${{github.workspace}}/build -o coverage1.lcov
+          --exclude build
+          --omit-lines '^\}$'
+          --exclude '*/autotests/*'
+          --include src
           --keep-going
-          -b ${{github.workspace}}
-          -o coverage1.lcov
-          --exclude 'build/*'
-          --exclude 'src/autotests/*'
-          --exclude 'usr/*'
-          ${{github.workspace}}/build
       - if: ${{ matrix.build-type == 'Debug' }}
         name: Coveralls
         uses: coverallsapp/github-action@v2
