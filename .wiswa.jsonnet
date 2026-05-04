@@ -4,7 +4,7 @@ local utils = import 'utils.libjsonnet';
   uses_user_defaults: true,
   security_policy_supported_versions: { '0.1.x': ':white_check_mark:' },
   project_name: 'ipv6-config-update',
-  version: '0.1.1',
+  version: '0.1.2',
   description: 'Update IPv6 CIDR in config files and restart relevant systemd units.',
   keywords: ['linux', 'qt', 'cmake', 'systemd', 'ipv6', 'configuration management'],
   clang_format_args: 'src/*.cpp src/*.h src/autotests/*.cpp',

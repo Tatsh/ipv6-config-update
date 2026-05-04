@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.31)
 project(
   ipv6-config-update
   LANGUAGES CXX
-  VERSION 0.1.1
+  VERSION 0.1.2
   DESCRIPTION "Update IPv6 CIDR in config files and restart relevant systemd units."
   HOMEPAGE_URL "https://github.com/Tatsh/ipv6-config-update")
 
