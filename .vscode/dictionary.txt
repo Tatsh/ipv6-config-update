@@ -80,6 +80,7 @@ systemdutil
 tagfile
 tagfiles
 tatsh
+tostring
 udvare
 updatertest
 vedantmgoyal
