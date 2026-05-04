@@ -39,7 +39,7 @@ jobs:
           Name=ipv6-config-update
           NoDisplay=true
           Type=Application
-          Version=${{matrix.build-type}}
+          Version=1.5
           EOF
           "./linuxdeploy-${DEPLOY_ARCH}.AppImage" --appdir ${{github.workspace}}/build/AppDir --output appimage --desktop-file ${{github.workspace}}/build/ipv6-config-update.desktop
           rm "./linuxdeploy-${DEPLOY_ARCH}.AppImage"
