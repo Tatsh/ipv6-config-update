@@ -6,6 +6,12 @@ local utils = import 'utils.libjsonnet';
   project_name: 'ipv6-config-update',
   version: '0.1.2',
   description: 'Update IPv6 CIDR in config files and restart relevant systemd units.',
+  social+: {
+    custom_badges: [
+      '[![Tests](https://github.com/Tatsh/ipv6-config-update/actions/workflows/tests.yml/badge.svg)](https://github.com/Tatsh/ipv6-config-update/actions/workflows/tests.yml)',
+      '[![Coverage Status](https://coveralls.io/repos/github/Tatsh/ipv6-config-update/badge.svg?branch=master)](https://coveralls.io/github/Tatsh/ipv6-config-update?branch=master)',
+    ],
+  },
   keywords: ['linux', 'qt', 'cmake', 'systemd', 'ipv6', 'configuration management'],
   clang_format_args: 'src/*.cpp src/*.h src/autotests/*.cpp',
   want_codeql: false,
