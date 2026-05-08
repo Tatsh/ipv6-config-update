@@ -31,7 +31,6 @@ esac
 esbenp
 foxundermoon
 gcov
-geninfo
 ggdb
 gmock
 gnucxx
@@ -60,6 +59,7 @@ nullptr
 offscreen
 oneline
 oneshot
+preapproved
 pylock
 qcompare
 qstringbuilder
@@ -84,12 +84,10 @@ tatsh
 tostring
 udvare
 updatertest
-vedantmgoyal
 vendored
 venv
 werror
 wextra
-winget
 wiswa
 wiswa's
 yarnrc
