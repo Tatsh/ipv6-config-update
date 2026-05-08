@@ -6,14 +6,16 @@
     },
     {
       "name": "qtbase",
-      "version>=": "6.8.3"
+      "version>=": "6.10.2"
     }
   ],
   "description": "Update IPv6 CIDR in config files and restart relevant systemd units.",
   "documentation": "https://ipv6-config-update.readthedocs.org",
   "homepage": "https://tatsh.github.io/ipv6-config-update/",
   "license": "MIT",
-  "maintainers": ["Andrew Udvare <audvare@gmail.com>"],
+  "maintainers": [
+    "Andrew Udvare <audvare@gmail.com>"
+  ],
   "name": "ipv6-config-update",
   "version": "0.1.2"
 }
