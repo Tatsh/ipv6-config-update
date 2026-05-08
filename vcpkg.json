@@ -2,7 +2,7 @@
   "dependencies": [
     {
       "name": "ecm",
-      "version>=": "6.7.0"
+      "version>=": "6.25.0"
     },
     {
       "name": "qtbase",
@@ -13,7 +13,9 @@
   "documentation": "https://ipv6-config-update.readthedocs.org",
   "homepage": "https://tatsh.github.io/ipv6-config-update/",
   "license": "MIT",
-  "maintainers": ["Andrew Udvare <audvare@gmail.com>"],
+  "maintainers": [
+    "Andrew Udvare <audvare@gmail.com>"
+  ],
   "name": "ipv6-config-update",
   "version": "0.1.2"
 }
