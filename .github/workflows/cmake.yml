@@ -3,9 +3,10 @@ jobs:
   build-linux:
     runs-on: ${{ matrix.arch.runner }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -23,9 +24,9 @@ jobs:
         run: >-
           cpack -C ${{matrix.build-type}}
           --config ${{github.workspace}}/build/CPackConfig.cmake --verbose
-      - name: Create AppImage
-        env:
+      - env:
           DEPLOY_ARCH: ${{ matrix.arch.deploy_arch }}
+        name: Create AppImage
         run: |
           wget "https://github.com/TheAssassin/linuxdeploy/releases/download/continuous/linuxdeploy-${DEPLOY_ARCH}.AppImage"
           chmod +x "linuxdeploy-${DEPLOY_ARCH}.AppImage"
@@ -44,11 +45,16 @@ jobs:
           "./linuxdeploy-${DEPLOY_ARCH}.AppImage" --appdir ${{github.workspace}}/build/AppDir --output appimage --desktop-file ${{github.workspace}}/build/ipv6-config-update.desktop
           rm "./linuxdeploy-${DEPLOY_ARCH}.AppImage"
           mv -v ${{github.workspace}}/*.AppImage "${{github.workspace}}/ipv6-config-update-${{matrix.build-type}}-${DEPLOY_ARCH}.AppImage"
-      - if: ${{ github.ref_type == 'tag' && matrix.build-type == 'Release' }}
+      - env:
+          DEPLOY_ARCH: ${{ matrix.arch.deploy_arch }}
+          TAG: ${{ github.ref_name }}
+        if: ${{ github.ref_type == 'tag' && matrix.build-type == 'Release' }}
         name: Rename with tag
-        run: mv -v ${{github.workspace}}/ipv6-config-update-*.AppImage ${{github.workspace}}/ipv6-config-update-${{github.ref_name}}-${{matrix.arch.deploy_arch}}.AppImage
+        run: >-
+          mv -v "${GITHUB_WORKSPACE}"/ipv6-config-update-*.AppImage
+          "${GITHUB_WORKSPACE}/ipv6-config-update-${TAG}-${DEPLOY_ARCH}.AppImage"
       - name: 'Upload Artifacts'
-        uses: 'actions/upload-artifact@v7'
+        uses: 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a'
         with:
           if-no-files-found: error
           name: ipv6-config-update-${{ matrix.build-type }}-Linux-${{ matrix.arch.deploy_arch }}
@@ -56,19 +62,48 @@ jobs:
             ${{github.workspace}}/ipv6-config-update-*.AppImage
             ${{github.workspace}}/ipv6-config-update-*.zip
       - name: Attest
-        uses: actions/attest-build-provenance@v4
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8
         with:
           subject-path: |
             ${{github.workspace}}/ipv6-config-update-*.AppImage
             ${{github.workspace}}/ipv6-config-update-*.zip
-      - if: ${{ github.ref_type == 'tag' && matrix.build-type == 'Release' }}
-        name: Upload package
-        uses: softprops/action-gh-release@v3
-        with:
-          draft: true
-          fail_on_unmatched_files: true
-          files: |
-            ${{github.workspace}}/ipv6-config-update-*.AppImage
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        if: ${{ github.ref_type == 'tag' && matrix.build-type == 'Release' }}
+        name: Upload package to draft release
+        run: |
+          shopt -s nullglob
+          files=("${GITHUB_WORKSPACE}"/ipv6-config-update-*.AppImage)
+          if [[ ${#files[@]} -eq 0 ]]; then
+            echo '::error::No AppImage was produced; refusing to attach an empty asset set.'
+            exit 1
+          fi
+          for attempt in 1 2 3 4 5; do
+            if gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
+              break
+            fi
+            # A sibling matrix job may win this race, which is fine: only existence matters.
+            if gh release create "$TAG" --repo "$REPO" --draft --verify-tag --title "$TAG" \
+              --notes ''; then
+              break
+            fi
+            echo "Draft release ${TAG} is not available yet (attempt ${attempt})."
+            sleep 5
+          done
+          gh release view "$TAG" --repo "$REPO" >/dev/null
+          gh release upload "$TAG" --repo "$REPO" --clobber "${files[@]}"
+          mapfile -t attached < <(gh release view "$TAG" --repo "$REPO" --json assets \
+            --jq '.assets[] | select(.state == "uploaded") | .name')
+          for file in "${files[@]}"; do
+            name=$(basename "$file")
+            if ! printf '%s\n' "${attached[@]}" | grep -qxF "$name"; then
+              echo "::error::Asset '${name}' is missing or incomplete after upload."
+              exit 1
+            fi
+            echo "Attached ${name} to ${TAG}."
+          done
     strategy:
       fail-fast: false
       matrix:

@@ -20,6 +20,17 @@ local utils = import 'utils.libjsonnet';
   clang_format_args: 'src/*.cpp src/*.h src/autotests/*.cpp',
   want_codeql: false,
   want_tests: false,
+  want_winget: false,
+  github+: {
+    zizmor: {
+      rules: {
+        // The hand-maintained Release workflow needs workflow_run to gate the draft release.
+        'dangerous-triggers': {
+          ignore: ['release.yml'],
+        },
+      },
+    },
+  },
   package_json+: {
     cspell+: {
       ignorePaths+: ['*.tags'],
@@ -64,11 +75,11 @@ local utils = import 'utils.libjsonnet';
     dependencies: [
       {
         name: 'ecm',
-        'version>=': '6.7.0',
+        'version>=': utils.latestVcpkgPortVersion('ecm'),
       },
       {
         name: 'qtbase',
-        'version>=': '6.8.3',
+        'version>=': utils.latestVcpkgPortVersion('qtbase'),
       },
     ],
   },
