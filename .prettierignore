@@ -17,6 +17,7 @@
 *.service
 *.tags
 *.timer
+*.tsbuildinfo
 *~
 .*.swp
 .*_cache/

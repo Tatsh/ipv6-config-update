@@ -53,8 +53,10 @@ mdfile
 mktemp
 mypy
 networkinfo
+noone
 nullglob
 nullptr
+numpydoc
 offscreen
 oneline
 oneshot
@@ -95,7 +97,6 @@ wextra
 winget
 wiswa
 wiswa's
-worktree
 yarnrc
 zizmor
 Ångström
