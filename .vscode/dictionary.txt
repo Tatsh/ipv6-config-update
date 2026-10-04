@@ -60,6 +60,7 @@ numpydoc
 offscreen
 oneline
 oneshot
+pipx
 preapproved
 pylock
 pyproject
