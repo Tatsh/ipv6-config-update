@@ -1,6 +1,15 @@
 ---
+concurrency:
+  cancel-in-progress: false
+  group: '${{ github.workflow }}-${{ github.ref }}'
+  queue: 'max'
 jobs:
   build-linux:
+    name: 'Build'
+    permissions:
+      attestations: write
+      contents: write
+      id-token: write
     runs-on: ${{ matrix.arch.runner }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -11,28 +20,37 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y extra-cmake-modules libsystemd-dev qt6-base-dev
-      - name: Configure
-        run: >-
-          cmake -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -B ${{github.workspace}}/build
-          --install-prefix ${{github.workspace}}/build/AppDir/usr
-          -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
-      - name: Build
-        run: cmake --build ${{github.workspace}}/build --verbose --config ${{matrix.build-type}}
-      - name: Install
-        run: cmake --install ${{github.workspace}}/build --config ${{matrix.build-type}} --verbose
-      - name: Package
-        run: >-
-          cpack -C ${{matrix.build-type}}
-          --config ${{github.workspace}}/build/CPackConfig.cmake --verbose
       - env:
+          BUILD_TYPE: '${{ matrix.build-type }}'
+        name: Configure
+        run: >-
+          cmake -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" -B "${GITHUB_WORKSPACE}/build"
+          --install-prefix "${GITHUB_WORKSPACE}/build/AppDir/usr"
+          -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
+      - env:
+          BUILD_TYPE: '${{ matrix.build-type }}'
+        name: Build
+        run: cmake --build "${GITHUB_WORKSPACE}/build" --verbose --config "${BUILD_TYPE}"
+      - env:
+          BUILD_TYPE: '${{ matrix.build-type }}'
+        name: Install
+        run: cmake --install "${GITHUB_WORKSPACE}/build" --config "${BUILD_TYPE}" --verbose
+      - env:
+          BUILD_TYPE: '${{ matrix.build-type }}'
+        name: Package
+        run: >-
+          cpack -C "${BUILD_TYPE}"
+          --config "${GITHUB_WORKSPACE}/build/CPackConfig.cmake" --verbose
+      - env:
+          BUILD_TYPE: '${{ matrix.build-type }}'
           DEPLOY_ARCH: ${{ matrix.arch.deploy_arch }}
         name: Create AppImage
         run: |
           wget "https://github.com/TheAssassin/linuxdeploy/releases/download/continuous/linuxdeploy-${DEPLOY_ARCH}.AppImage"
           chmod +x "linuxdeploy-${DEPLOY_ARCH}.AppImage"
-          mkdir -p ${{github.workspace}}/build/AppDir/usr/share/icons/hicolor/scalable/apps
-          wget 'https://raw.githubusercontent.com/GNOME/adwaita-icon-theme/refs/heads/master/src/fullcolor/application-x-generic.source.svg' -O ${{github.workspace}}/build/AppDir/usr/share/icons/hicolor/scalable/apps/application-x-generic.svg
-          cat > ${{github.workspace}}/build/ipv6-config-update.desktop <<EOF
+          mkdir -p "${GITHUB_WORKSPACE}/build/AppDir/usr/share/icons/hicolor/scalable/apps"
+          wget 'https://raw.githubusercontent.com/GNOME/adwaita-icon-theme/refs/heads/master/src/fullcolor/application-x-generic.source.svg' -O "${GITHUB_WORKSPACE}/build/AppDir/usr/share/icons/hicolor/scalable/apps/application-x-generic.svg"
+          cat > "${GITHUB_WORKSPACE}/build/ipv6-config-update.desktop" <<EOF
           [Desktop Entry]
           Categories=Utility;
           Exec=ipv6-config-update %u
@@ -42,9 +60,9 @@ jobs:
           Type=Application
           Version=1.5
           EOF
-          "./linuxdeploy-${DEPLOY_ARCH}.AppImage" --appdir ${{github.workspace}}/build/AppDir --output appimage --desktop-file ${{github.workspace}}/build/ipv6-config-update.desktop
+          "./linuxdeploy-${DEPLOY_ARCH}.AppImage" --appdir "${GITHUB_WORKSPACE}/build/AppDir" --output appimage --desktop-file "${GITHUB_WORKSPACE}/build/ipv6-config-update.desktop"
           rm "./linuxdeploy-${DEPLOY_ARCH}.AppImage"
-          mv -v ${{github.workspace}}/*.AppImage "${{github.workspace}}/ipv6-config-update-${{matrix.build-type}}-${DEPLOY_ARCH}.AppImage"
+          mv -v "${GITHUB_WORKSPACE}"/*.AppImage "${GITHUB_WORKSPACE}/ipv6-config-update-${BUILD_TYPE}-${DEPLOY_ARCH}.AppImage"
       - env:
           DEPLOY_ARCH: ${{ matrix.arch.deploy_arch }}
           TAG: ${{ github.ref_name }}
@@ -121,7 +139,4 @@ name: Build
       - 'v*.*.*'
   pull_request:
     branches: [master]
-permissions:
-  attestations: write
-  contents: write
-  id-token: write
+permissions: {}
