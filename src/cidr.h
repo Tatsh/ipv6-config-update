@@ -24,14 +24,16 @@ public:
      * Constructs an invalid CIDR value.
      * @param isValid Indicates if the value is valid (default: false).
      */
-    Value(bool isValid = false) : m_isValid(isValid) {};
+    Value(bool isValid = false) : m_isValid(isValid) {
+    }
 
     /**
      * Constructs a CIDR value from a string and validity flag.
      * @param string The CIDR string representation.
      * @param isValid Indicates if the value is valid.
      */
-    explicit Value(QString string, bool isValid) : m_string(string), m_isValid(isValid) {};
+    explicit Value(QString string, bool isValid) : m_string(string), m_isValid(isValid) {
+    }
 
     /**
      * Checks if the CIDR value is valid.
