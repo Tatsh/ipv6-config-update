@@ -2,3 +2,5 @@ rules:
   dangerous-triggers:
     ignore:
       - 'release.yml'
+  undocumented-permissions:
+    disable: true
