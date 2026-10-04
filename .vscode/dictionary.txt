@@ -73,6 +73,7 @@ qverify
 reflow
 regen
 ripgreprc
+sbclaude
 schemafile
 shellcheck
 shellformat
