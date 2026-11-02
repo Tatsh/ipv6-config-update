@@ -46,7 +46,9 @@ struct AbstractFileManager {
 struct FileManager : AbstractFileManager {
     QString readContent(const QString &fileName) const override {
         QFile file(fileName);
-        file.open(QIODevice::ReadOnly | QIODevice::Text | QIODevice::ExistingOnly);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text | QIODevice::ExistingOnly)) {
+            return {};
+        }
         return QString::fromUtf8(file.readAll());
     }
 
