@@ -12,6 +12,7 @@ buildsystems
 bytearray
 cidrtest
 commitizen
+copytree
 coveragerc
 coverallsapp
 cpack
@@ -39,7 +40,6 @@ htmlcov
 interprocedural
 ipwatch
 ipwatchdebug
-iterdir
 iwyu
 jinja
 jsonnet
@@ -79,11 +79,13 @@ qverify
 reflow
 regen
 ripgreprc
+rmtree
 sbclaude
 schemafile
 shellcheck
 shellformat
 shopt
+shutil
 snapcraft
 softprops
 srcs
