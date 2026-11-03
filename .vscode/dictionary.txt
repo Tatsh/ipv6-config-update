@@ -65,6 +65,7 @@ offscreen
 oneline
 oneshot
 pathlib
+pipefail
 pipx
 preapproved
 pylock
