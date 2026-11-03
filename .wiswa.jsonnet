@@ -18,10 +18,15 @@ local utils = import 'utils.libjsonnet';
   ],
   keywords: ['linux', 'qt', 'cmake', 'systemd', 'ipv6', 'configuration management'],
   clang_format_args: 'src/*.cpp src/*.h src/autotests/*.cpp',
-  want_codeql: false,
+  want_codeql: true,
   want_tests: false,
   want_winget: false,
   github+: {
+    codeql+: {
+      languages: ['actions'],
+      runs_on: 'ubuntu-latest',
+      workflow_file: 'codeql-actions.yml',
+    },
     zizmor: {
       rules: {
         // The hand-maintained Release workflow needs workflow_run to gate the draft release.
