@@ -1,3 +1,4 @@
+analyzer
 appdir
 appimage
 autobuild
@@ -23,6 +24,7 @@ dcmake
 dcoverage
 docstrings
 dversion
+elif
 endfunction
 esac
 esbenp
@@ -37,6 +39,7 @@ htmlcov
 interprocedural
 ipwatch
 ipwatchdebug
+iterdir
 iwyu
 jinja
 jsonnet
@@ -53,6 +56,7 @@ mdfile
 mktemp
 mypy
 networkinfo
+nojekyll
 noone
 nullglob
 nullptr
@@ -60,6 +64,7 @@ numpydoc
 offscreen
 oneline
 oneshot
+pathlib
 pipx
 preapproved
 pylock
