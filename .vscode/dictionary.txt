@@ -76,10 +76,12 @@ qtbase
 qtcore
 qtest
 qverify
+rdparty
 reflow
 regen
 ripgreprc
 rmtree
+sarif
 sbclaude
 schemafile
 shellcheck
