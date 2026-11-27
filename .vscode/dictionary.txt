@@ -1,4 +1,3 @@
-analyzer
 appdir
 appimage
 autobuild
@@ -12,7 +11,6 @@ buildsystems
 bytearray
 cidrtest
 commitizen
-copytree
 coveragerc
 coverallsapp
 cpack
@@ -25,7 +23,6 @@ dcmake
 dcoverage
 docstrings
 dversion
-elif
 endfunction
 esac
 esbenp
@@ -64,8 +61,6 @@ numpydoc
 offscreen
 oneline
 oneshot
-pathlib
-pipefail
 pipx
 preapproved
 pylock
@@ -80,14 +75,12 @@ rdparty
 reflow
 regen
 ripgreprc
-rmtree
 sarif
 sbclaude
 schemafile
 shellcheck
 shellformat
 shopt
-shutil
 snapcraft
 softprops
 srcs
